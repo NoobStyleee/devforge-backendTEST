@@ -1,10 +1,17 @@
 import { Router } from 'express';
-
+import { celebrate } from 'celebrate';
+import {
+  refreshUserSession,
+  registerUser,
+} from '../controllers/authController.js';
+import { registerUserSchema } from '../validations/authValidation.js';
+import { loginUser } from '../controllers/authController.js';
+import { loginUserSchema } from '../validations/authValidation.js';
 const router = Router();
 
-router.post('/auth/register', () => {});
-router.post('/auth/login', () => {});
-router.post('/auth/refresh', () => {});
+router.post('/auth/register', celebrate(registerUserSchema), registerUser);
+router.post('/auth/login', celebrate(loginUserSchema), loginUser);
+router.post('/auth/refresh', refreshUserSession);
 router.post('/auth/logout', () => {});
 
 export default router;
