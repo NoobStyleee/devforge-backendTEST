@@ -7,13 +7,14 @@ import { Session } from '../models/session.js';
 import { createSession, setSessionCookies } from '../services/auth.js';
 
 export const registerUser = async (req, res) => {
-  const { email, password } = req.body;
+  const { username, email, password } = req.body;
   const userWithSameEmail = await User.findOne({ email });
   if (userWithSameEmail) {
     throw createHttpError(409, 'Email in use');
   }
   const hashedPassword = await bcrypt.hash(password, 10);
   const newUser = await User.create({
+    username,
     email,
     password: hashedPassword,
   });
