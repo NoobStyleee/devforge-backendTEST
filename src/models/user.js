@@ -1,4 +1,6 @@
 import { model, Schema } from 'mongoose';
+import { Article } from '../models/Article.js';
+import { User } from '../models/User.js';
 
 const userSchema = new Schema(
   {
@@ -10,6 +12,12 @@ const userSchema = new Schema(
       required: false,
       default: '',
     },
+    savedArticles: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Article',
+      },
+    ],
   },
   { timestamps: true },
 );
