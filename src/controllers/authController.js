@@ -2,7 +2,7 @@ import createHttpError from 'http-errors';
 import { User } from '../models/user.js';
 import bcrypt from 'bcrypt';
 // import { create } from 'handlebars';
-import jwt from 'jsonwebtoken';
+
 import { Session } from '../models/session.js';
 import { createSession, setSessionCookies } from '../services/auth.js';
 
@@ -36,16 +36,10 @@ export const loginUser = async (req, res) => {
   if (!isValidPassword) {
     throw createHttpError(401, 'Invalid credentials');
   }
-  const token = jwt.sign({ sub: user._id, email }, process.env.JWT_SECRET, {
-    expiresIn: '24h',
-  });
-
   await Session.deleteOne({ userId: user._id });
   const newSession = await createSession(user._id);
   setSessionCookies(res, newSession);
   res.status(200).json(user);
-
-  res.status(200).json({ user });
 };
 
 export const refreshUserSession = async (req, res) => {
