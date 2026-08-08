@@ -1,4 +1,6 @@
 import createHttpError from 'http-errors';
+import { Article } from '../models/Article.js';
+import { User } from '../models/User.js';
 
 export const addArticleToSavedArticles = async (req, res, next) => {
   try {
