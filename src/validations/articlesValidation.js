@@ -1,11 +1,13 @@
-import { celebrate, Joi, Segments } from 'celebrate';
+import { Joi, Segments } from 'celebrate';
+import { isValidObjectId } from 'mongoose';
 
-export const getArticlesByAuthorValidation = celebrate({
+export const getArticlesByAuthorValidation = {
   [Segments.PARAMS]: Joi.object({
-    authorId: Joi.string().hex().length(24).required().messages({
-      'string.hex': 'authorId must be a valid hex string',
-      'string.length': 'authorId must be exactly 24 characters long',
-      'any.required': 'authorId is required',
-    }),
+    authorId: Joi.string().custom((value) => {
+      if (!isValidObjectId(value)) {
+        throw new Error('Invalid id');
+      }
+      return value;
+    }).required(),
   }),
-});
+};

@@ -1,18 +1,9 @@
-import { getArticlesByAuthorId } from '../services/articlesService.js';
+import { Article } from '../models/article.js';
 
+export const getArticlesByAuthorController = async (req, res) => {
+  const { authorId } = req.params;
 
-export const getArticlesByAuthorController = async (req, res, next) => {
-  try {
-    const { authorId } = req.params;
+  const articles = await Article.find({ authorId });
 
-    const articles = await getArticlesByAuthorId(authorId);
-
-    res.status(200).json({
-      status: 'success',
-      message: 'Successfully retrieved articles by author',
-      data: articles,
-    });
-  } catch (error) {
-    next(error);
-  }
+  res.status(200).json(articles);
 };
