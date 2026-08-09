@@ -1,3 +1,4 @@
+import { isValidObjectId } from 'mongoose';
 import { Joi, Segments } from 'celebrate';
 
 export const getUsersSchema = {
@@ -7,8 +8,14 @@ export const getUsersSchema = {
   }),
 };
 
+const objectIdValidator = (value, helpers) => {
+  return !isValidObjectId(value)
+    ? helpers.message('Invalid id format.')
+    : value;
+};
+
 export const getUserByIdSchema = {
   [Segments.PARAMS]: Joi.object({
-    id: Joi.string().hex().length(24).required(),
+    id: Joi.string().custom(objectIdValidator).required(),
   }),
 };
