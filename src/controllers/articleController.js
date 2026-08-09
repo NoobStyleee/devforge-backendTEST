@@ -8,14 +8,11 @@ export const createArticle = async (req, res) => {
       title,
       content,
       image: req.file ? req.file.path : null,
-      authorId: req.user.sub
+      authorId:  req.user?._id
     });
 
     await article.save();
-    res.status(201).json(article);
-  
-    res.status(500).json({ message: 'Server error' });
-  
+    res.status(201).json(article);     
 };
 
 export const getArticles = async (req, res) => {
