@@ -1,4 +1,22 @@
-import { Article } from '../models/article.js';
+import { Article } from '../models/Article.js';
+
+export const getArticlesController = async (req, res) => {
+  const { page, limit } = req.query;
+
+  const skip = (page - 1) * limit;
+
+  const [articles, total] = await Promise.all([
+    Article.find().skip(skip).limit(limit),
+    Article.countDocuments(),
+  ]);
+
+  res.status(200).json({
+    articles,
+    total,
+    page,
+    limit,
+  });
+};
 
 export const getArticleByIdController = async (req, res) => {
   const { id } = req.params;

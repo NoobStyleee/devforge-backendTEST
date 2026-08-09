@@ -16,6 +16,9 @@ const userSchema = new Schema(
         ref: 'Article',
       },
     ],
+    name: { type: String, trim: true },
+    avatarUrl: { type: String, trim: true, default: '' },
+    articlesAmount: { type: Number, default: 0 },
   },
   { timestamps: true },
 );
