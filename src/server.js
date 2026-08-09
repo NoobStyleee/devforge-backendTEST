@@ -20,7 +20,9 @@ app.use(logger);
 app.use(cookieParser());
 
 app.use(authRoutes);
+
 app.use(articlesRoutes);
+
 app.use(userRoutes);
 
 app.use(notFoundHandler);
