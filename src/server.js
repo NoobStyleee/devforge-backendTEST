@@ -9,6 +9,7 @@ import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRouts.js';
 import { errors } from 'celebrate';
 import cookieParser from 'cookie-parser';
+import articlesRoutes from './routes/articlesRoutes.js';
 
 const app = express();
 const PORT = process.env.PORT ?? 3000;
@@ -19,7 +20,9 @@ app.use(logger);
 app.use(cookieParser());
 
 app.use(authRoutes);
+app.use(articlesRoutes);
 app.use(userRoutes);
+
 app.use(notFoundHandler);
 
 app.use(errors());
