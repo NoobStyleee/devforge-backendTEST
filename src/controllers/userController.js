@@ -1,10 +1,10 @@
 import { User } from '../models/user.js';
 import { uploadToCloudinary } from '../services/cloudinaryService.js';
-import createError from 'http-errors';
+import createHttpError from 'http-errors';
 
 export const updateUserAvatar = async (req, res) => {
   if (!req.file) {
-    throw createError(400, 'Avatar image file is required');
+    throw createHttpError(400, 'Avatar image file is required');
   }
 
   const { _id } = req.user;
@@ -18,7 +18,7 @@ export const updateUserAvatar = async (req, res) => {
   );
 
   if (!updatedUser) {
-    throw createError(404, 'User not found');
+    throw createHttpError(404, 'User not found');
   }
 
   res.status(200).json({
