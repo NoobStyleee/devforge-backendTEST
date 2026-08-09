@@ -1,25 +1,24 @@
-import { User } from '../models/User.js';
+import { User } from '../models/user.js';
 import { uploadToCloudinary } from '../services/cloudinaryService.js';
-import { HttpError } from '../utils/HttpError.js';
+import createError from 'http-errors';
 
 export const updateUserAvatar = async (req, res) => {
   if (!req.file) {
-    throw HttpError(400, 'Avatar image file is required');
+    throw createError(400, 'Avatar image file is required');
   }
 
-  // req.user нужно дописать в middleware authenticate.js
-  const userId = req.user._id;
+  const { _id } = req.user;
 
   const avatarUrl = await uploadToCloudinary(req.file.buffer);
 
   const updatedUser = await User.findByIdAndUpdate(
-    userId,
+    _id,
     { avatarUrl },
     { new: true, select: '-password -token' },
   );
 
   if (!updatedUser) {
-    throw HttpError(404, 'User not found');
+    throw createError(404, 'User not found');
   }
 
   res.status(200).json({

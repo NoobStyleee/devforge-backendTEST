@@ -19,17 +19,11 @@ app.use(logger);
 app.use(cookieParser());
 
 app.use(authRoutes);
-
+app.use('/api/users', userRouter);
 app.use(notFoundHandler);
 
 app.use(errors());
 app.use(errorHandler);
-
-app.use('/api/users', userRouter);
-app.use((err, req, res, next) => {
-  const { status = 500, message = 'Server error' } = err;
-  res.status(status).json({ message });
-});
 
 await connectMongoDB();
 
