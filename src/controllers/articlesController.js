@@ -1,4 +1,4 @@
-import { Article } from '../models/Article.js';
+import { Article } from '../models/article.js';
 
 export const getArticleByIdController = async (req, res) => {
   const { id } = req.params;
