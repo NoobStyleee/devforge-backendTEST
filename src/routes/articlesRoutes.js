@@ -3,7 +3,7 @@ import { celebrate } from 'celebrate';
 import { authenticate } from '../middleware/authenticate.js';
 import { upload } from '../middleware/upload.js';
 import { updateArticleSchema } from '../validations/articles.js';
-import { updateArticle } from '../controllers/articles.js';
+import { updateArticle, deleteArticle } from '../controllers/articles.js';
 
 const router = Router();
 
@@ -14,5 +14,7 @@ router.patch(
   celebrate(updateArticleSchema),
   updateArticle,
 );
+
+router.delete('/articles/:id', authenticate, deleteArticle);
 
 export default router;
