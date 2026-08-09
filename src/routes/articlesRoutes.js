@@ -1,9 +1,17 @@
 import { Router } from 'express';
 import { celebrate } from 'celebrate';
-import { getArticleByIdController } from '../controllers/articlesController.js';
-import { getArticleByIdSchema } from '../validations/articlesValidation.js';
+import {
+  getArticleByIdController,
+  getArticlesController,
+} from '../controllers/articlesController.js';
+import {
+  getArticleByIdSchema,
+  getArticlesSchema,
+} from '../validations/articlesValidation.js';
 
 const router = Router();
+
+router.get('/articles', celebrate(getArticlesSchema), getArticlesController);
 
 router.get(
   '/articles/:id',

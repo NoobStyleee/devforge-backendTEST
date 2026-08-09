@@ -12,3 +12,10 @@ export const getArticleByIdSchema = {
     id: Joi.string().custom(objectIdValidator).required(),
   }),
 };
+
+export const getArticlesSchema = {
+  [Segments.QUERY]: Joi.object({
+    page: Joi.number().integer().min(1).default(1),
+    limit: Joi.number().integer().min(1).default(6),
+  }),
+};
