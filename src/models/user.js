@@ -10,6 +10,12 @@ const userSchema = new Schema(
       required: false,
       default: '',
     },
+    savedArticles: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Article',
+      },
+    ],
     name: { type: String, trim: true },
     avatarUrl: { type: String, trim: true, default: '' },
     articlesAmount: { type: Number, default: 0 },
