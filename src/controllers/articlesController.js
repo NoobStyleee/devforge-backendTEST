@@ -35,15 +35,13 @@ export const getArticleByIdController = async (req, res) => {
 
 export const createArticle = async (req, res) => {
   try {
-    const { title, desc, article, img, rate, date, author } = req.body;
+    const { title, desc, img, date, author } = req.body;
     const ownerId = req.user._id; 
 
     const newArticle = await Article.create({
       title,
       desc,
-      article,
-      img,
-      rate,
+      img,   
       ownerId,
       date,
       author, 
