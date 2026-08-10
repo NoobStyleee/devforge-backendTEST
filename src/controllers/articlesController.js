@@ -31,3 +31,26 @@ export const getArticleByIdController = async (req, res) => {
 
   res.status(200).json(article);
 };
+
+
+export const createArticle = async (req, res) => {
+  try {
+    const { title, desc, article, img, rate, date, author } = req.body;
+    const ownerId = req.user._id; 
+
+    const newArticle = await Article.create({
+      title,
+      desc,
+      article,
+      img,
+      rate,
+      ownerId,
+      date,
+      author, 
+    });
+
+    res.status(201).json(newArticle);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};

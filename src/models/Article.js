@@ -22,12 +22,11 @@ const articleSchema = new Schema(
       type: Number,
       default: 0,
     },
-    ownerId: {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
+    date: {
+      type: String,
       required: true,
     },
-    date: {
+    author: {
       type: String,
       required: true,
     },

@@ -8,8 +8,7 @@ import { connectMongoDB } from './db/connectMongoDB.js';
 import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import { errors } from 'celebrate';
-import cookieParser from 'cookie-parser';
-import articleRoutes from './routes/articleRoutes.js';
+import cookieParser from 'cookie-parser';   
 import articlesRoutes from './routes/articlesRoutes.js';
 
 const app = express();
@@ -21,7 +20,6 @@ app.use(logger);
 app.use(cookieParser());
 
 app.use(authRoutes); 
-app.use(articleRoutes);
 app.use(userRoutes);
 app.use(articlesRoutes);
 
