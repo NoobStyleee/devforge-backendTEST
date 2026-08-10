@@ -6,7 +6,7 @@ export const getArticlesController = async (req, res) => {
   const skip = (page - 1) * limit;
 
   const [articles, total] = await Promise.all([
-    Article.find().skip(skip).limit(limit),
+    Article.find().skip(skip).limit(limit).populate('ownerId', 'name'),
     Article.countDocuments(),
   ]);
 
@@ -21,7 +21,7 @@ export const getArticlesController = async (req, res) => {
 export const getArticleByIdController = async (req, res) => {
   const { id } = req.params;
 
-  const article = await Article.findById(id);
+  const article = await Article.findById(id).populate('ownerId', 'name');
 
   if (!article) {
     return res.status(404).json({

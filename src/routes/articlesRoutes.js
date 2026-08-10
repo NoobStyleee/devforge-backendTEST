@@ -20,7 +20,7 @@ const upload = multer({
   limits: { fileSize: 1024 * 1024 }, // максимум 1Mb
 });
 
-router.get('/articles', celebrate(getArticlesSchema), getArticlesController);
+router.get('/', celebrate(getArticlesSchema), getArticlesController);
 
 router.get(
   '/articles/:id',
