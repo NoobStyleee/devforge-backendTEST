@@ -8,7 +8,7 @@ import {
 import {
   getArticleByIdSchema,
   getArticlesSchema,
-  createArticlesShema
+  createArticlesSchema
 } from '../validations/articlesValidation.js';
 import { authenticate } from '../middleware/authenticate.js';
 import multer from 'multer';
@@ -28,6 +28,6 @@ router.get(
   getArticleByIdController,
 );
 
-router.post('/articles',authenticate, upload.single('image'), celebrate(createArticlesShema), createArticle);
+router.post('/articles', authenticate , upload.single('image'), celebrate(createArticlesSchema), createArticle);
 
 export default router;

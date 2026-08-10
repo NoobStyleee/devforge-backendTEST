@@ -1,3 +1,4 @@
+import createHttpError from 'http-errors';
 import { Article } from '../models/Article.js';
 
 export const getArticlesController = async (req, res) => {
@@ -33,8 +34,7 @@ export const getArticleByIdController = async (req, res) => {
 };
 
 
-export const createArticle = async (req, res) => {
-  try {
+export const createArticle = async (req, res) => {    
     const { title, desc, img, date, author } = req.body;
     const ownerId = req.user._id; 
 
@@ -46,9 +46,9 @@ export const createArticle = async (req, res) => {
       date,
       author, 
     });
-
-    res.status(201).json(newArticle);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
+  
+  if (!newArticle) {
+    throw createHttpError();
   }
+    res.status(201).json(newArticle);        
 };

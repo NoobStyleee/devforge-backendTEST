@@ -20,7 +20,7 @@ export const getArticlesSchema = {
   }),
 };
 
-export const createArticlesShema = {
+export const createArticlesSchema = {
   [Segments.BODY]: Joi.object().keys({
     title: Joi.string().min(3).max(48).required(),
     desc: Joi.string().min(100).max(4000).required(),     
