@@ -7,6 +7,12 @@ const objectIdValidator = (value, helpers) => {
     : value;
 };
 
+export const getArticlesByAuthorValidation = {
+  [Segments.PARAMS]: Joi.object({
+    ownerId: Joi.string().custom(objectIdValidator).required(),
+  }),
+};
+
 export const getArticleByIdSchema = {
   [Segments.PARAMS]: Joi.object({
     id: Joi.string().custom(objectIdValidator).required(),

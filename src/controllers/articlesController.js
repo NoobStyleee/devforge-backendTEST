@@ -18,6 +18,14 @@ export const getArticlesController = async (req, res) => {
   });
 };
 
+export const getArticlesByAuthorController = async (req, res) => {
+  const { ownerId } = req.params;
+
+  const articles = await Article.find({ ownerId });
+
+  res.status(200).json(articles);
+};
+
 export const getArticleByIdController = async (req, res) => {
   const { id } = req.params;
 
