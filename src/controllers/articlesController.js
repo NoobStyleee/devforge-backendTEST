@@ -1,5 +1,5 @@
 import createHttpError from 'http-errors';
-import { Article } from '../models/Article.js';
+import { Article } from '../models/article.js';
 
 export const getArticlesController = async (req, res) => {
   const { page, limit } = req.query;
@@ -17,6 +17,14 @@ export const getArticlesController = async (req, res) => {
     page,
     limit,
   });
+};
+
+export const getArticlesByAuthorController = async (req, res) => {
+  const { ownerId } = req.params;
+
+  const articles = await Article.find({ ownerId });
+
+  res.status(200).json(articles);
 };
 
 export const getArticleByIdController = async (req, res) => {

@@ -1,11 +1,13 @@
 import { Router } from 'express';
 import { celebrate } from 'celebrate';
 import {
+  getArticlesByAuthorController,
   getArticleByIdController,
   getArticlesController,
   createArticle
 } from '../controllers/articlesController.js';
 import {
+  getArticlesByAuthorValidation,
   getArticleByIdSchema,
   getArticlesSchema,
   createArticlesSchema
@@ -28,6 +30,12 @@ router.get(
   getArticleByIdController,
 );
 
-router.post('/articles', authenticate , upload.single('image'), celebrate(createArticlesSchema), createArticle);
+router.post('/articles', authenticate, upload.single('image'), celebrate(createArticlesSchema), createArticle);
+
+router.get(
+  '/articles/author/:ownerId',
+  celebrate(getArticlesByAuthorValidation),
+  getArticlesByAuthorController,
+);
 
 export default router;
