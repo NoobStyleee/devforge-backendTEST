@@ -46,6 +46,18 @@ export const deleteArticleFromSavedArticles = async (req, res) => {
   return res.status(200).json(updatedUser);
 };
 
+export const getSavedArticles = async (req, res) => {
+  const userId = req.user._id;
+
+  const user = await User.findById(userId).populate('savedArticles');
+
+  if (!user) {
+    throw createHttpError(404, 'User not found');
+  }
+
+  res.status(200).json(user.savedArticles);
+};
+
 export const getUsers = async (req, res) => {
   const { page, perPage } = req.query;
 
