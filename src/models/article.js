@@ -16,7 +16,7 @@ const articleSchema = new Schema(
     },
     article: {
       type: String,
-      required: true,
+      required: false,      
     },
     rate: {
       type: Number,
@@ -27,10 +27,10 @@ const articleSchema = new Schema(
       ref: 'User',
       required: true,
     },
-    date: {
+    date: { 
       type: String,
       required: true,
-    },
+    }, 
   },
   {
     timestamps: true,
