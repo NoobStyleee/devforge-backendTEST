@@ -1,21 +1,29 @@
 import { Router } from 'express';
 import { celebrate } from 'celebrate';
-import { getUsers, getUserById } from '../controllers/userController.js';
+
+import {
+  getUsers,
+  getUserById,
+  getSavedArticles,
+  addArticleToSavedArticles,
+  deleteArticleFromSavedArticles,
+  updateUserAvatar,
+} from '../controllers/userController.js';
+
 import {
   getUsersSchema,
   getUserByIdSchema,
 } from '../validations/userValidation.js';
-import {
-  addArticleToSavedArticles,
-  deleteArticleFromSavedArticles,
-} from '../controllers/userController.js';
+
 import { authenticate } from '../middleware/authenticate.js';
 import { getArticleByIdSchema } from '../validations/articlesValidation.js';
+import { upload } from '../middleware/upload.js';
 
 const router = Router();
 
 router.get('/users', celebrate(getUsersSchema), getUsers);
 router.get('/users/:id', celebrate(getUserByIdSchema), getUserById);
+router.get('/saved-articles', authenticate, getSavedArticles);
 router.post(
   '/saved-articles/:id',
   authenticate,
@@ -27,6 +35,12 @@ router.delete(
   authenticate,
   celebrate(getArticleByIdSchema),
   deleteArticleFromSavedArticles,
+);
+router.patch(
+  '/users/me/avatar',
+  authenticate,
+  upload.single('avatar'),
+  updateUserAvatar,
 );
 
 export default router;

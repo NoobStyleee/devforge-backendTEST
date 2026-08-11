@@ -6,12 +6,10 @@ import { errorHandler } from './middleware/errorHandler.js';
 import { notFoundHandler } from './middleware/notFoundHandler.js';
 import { connectMongoDB } from './db/connectMongoDB.js';
 import authRoutes from './routes/authRoutes.js';
-import articlesRoutes from './routes/articlesRoutes.js';
 import userRoutes from './routes/userRoutes.js';
+import articlesRoutes from './routes/articlesRoutes.js';
 import { errors } from 'celebrate';
 import cookieParser from 'cookie-parser';
-import userAvatarRoutes from './routes/userAvatarRoutes.js';
-
 const app = express();
 const PORT = process.env.PORT ?? 3000;
 
@@ -21,7 +19,6 @@ app.use(logger);
 app.use(cookieParser());
 
 app.use(authRoutes);
-app.use(userAvatarRoutes);
 app.use(userRoutes);
 app.use(articlesRoutes);
 
