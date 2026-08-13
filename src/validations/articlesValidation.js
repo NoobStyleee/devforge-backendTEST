@@ -38,6 +38,18 @@ export const createArticlesSchema = {
   }),
 };
 
+export const updateArticleSchema = {
+  [Segments.PARAMS]: Joi.object({
+    id: Joi.string().custom(objectIdValidator).required(),
+  }),
+  [Segments.BODY]: Joi.object({
+    title: Joi.string().min(3).max(48),
+    desc: Joi.string().min(100).max(4000),
+    date: Joi.string().pattern(/^\d{4}-\d{2}-\d{2}$/),
+    img: Joi.string().uri(),
+  }).min(1),
+};
+
 export const deleteArticleSchema = {
   [Segments.PARAMS]: Joi.object({
     id: Joi.string().custom(objectIdValidator).required(),
