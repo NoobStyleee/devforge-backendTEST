@@ -1,20 +1,41 @@
 import { Router } from 'express';
 import { celebrate } from 'celebrate';
+import {
+  getArticlesByAuthorController,
+  getArticleByIdController,
+  getArticlesController,
+  createArticle
+} from '../controllers/articlesController.js';
+import {
+  getArticlesByAuthorValidation,
+  getArticleByIdSchema,
+  getArticlesSchema,
+  createArticlesSchema
+} from '../validations/articlesValidation.js';
 import { authenticate } from '../middleware/authenticate.js';
-import { upload } from '../middleware/upload.js';
-import { updateArticleSchema } from '../validations/articles.js';
-import { updateArticle, deleteArticle } from '../controllers/articles.js';
+import multer from 'multer';
+
 
 const router = Router();
+const upload = multer({
+  dest: 'uploads/',
+  limits: { fileSize: 1024 * 1024 }, // максимум 1Mb
+});
 
-router.patch(
+router.get('/articles', celebrate(getArticlesSchema), getArticlesController);
+
+router.get(
   '/articles/:id',
-  authenticate,
-  upload.single('photo'),
-  celebrate(updateArticleSchema),
-  updateArticle,
+  celebrate(getArticleByIdSchema),
+  getArticleByIdController,
 );
 
-router.delete('/articles/:id', authenticate, deleteArticle);
+router.post('/articles', authenticate, upload.single('image'), celebrate(createArticlesSchema), createArticle);
+
+router.get(
+  '/articles/author/:ownerId',
+  celebrate(getArticlesByAuthorValidation),
+  getArticlesByAuthorController,
+);
 
 export default router;
