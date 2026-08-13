@@ -16,21 +16,25 @@ const articleSchema = new Schema(
     },
     article: {
       type: String,
-      required: false,      
-    },
-    rate: {
-      type: Number,
-      default: 0,
+      required: false,
     },
     ownerId: {
       type: Schema.Types.ObjectId,
       ref: 'User',
       required: true,
     },
-    date: { 
+    rate: {
+      type: Number,
+      default: 0,
+    },
+    date: {
       type: String,
       required: true,
-    }, 
+    },
+    author: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,
