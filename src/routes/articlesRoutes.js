@@ -4,17 +4,18 @@ import {
   getArticlesByAuthorController,
   getArticleByIdController,
   getArticlesController,
-  createArticle
+  createArticle,
+  updateArticle,
 } from '../controllers/articlesController.js';
 import {
   getArticlesByAuthorValidation,
   getArticleByIdSchema,
   getArticlesSchema,
-  createArticlesSchema
+  createArticlesSchema,
+  updateArticleSchema,
 } from '../validations/articlesValidation.js';
 import { authenticate } from '../middleware/authenticate.js';
 import multer from 'multer';
-
 
 const router = Router();
 const upload = multer({
@@ -30,12 +31,25 @@ router.get(
   getArticleByIdController,
 );
 
-router.post('/articles', authenticate, upload.single('image'), celebrate(createArticlesSchema), createArticle);
+router.post(
+  '/articles',
+  authenticate,
+  upload.single('image'),
+  celebrate(createArticlesSchema),
+  createArticle,
+);
 
 router.get(
   '/articles/author/:ownerId',
   celebrate(getArticlesByAuthorValidation),
   getArticlesByAuthorController,
+);
+
+router.patch(
+  '/articles/:id',
+  authenticate,
+  celebrate(updateArticleSchema),
+  updateArticle,
 );
 
 export default router;

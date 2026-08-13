@@ -29,12 +29,23 @@ export const getArticlesSchema = {
 export const createArticlesSchema = {
   [Segments.BODY]: Joi.object().keys({
     title: Joi.string().min(3).max(48).required(),
-    desc: Joi.string().min(100).max(4000).required(),     
+    desc: Joi.string().min(100).max(4000).required(),
     date: Joi.string()
       .pattern(/^\d{4}-\d{2}-\d{2}$/)
       .required(),
     author: Joi.string().min(4).max(50).required(),
-    img: Joi.string().uri().required(),    
+    img: Joi.string().uri().required(),
   }),
 };
 
+export const updateArticleSchema = {
+  [Segments.PARAMS]: Joi.object({
+    id: Joi.string().custom(objectIdValidator).required(),
+  }),
+  [Segments.BODY]: Joi.object({
+    title: Joi.string().min(3).max(48),
+    desc: Joi.string().min(100).max(4000),
+    date: Joi.string().pattern(/^\d{4}-\d{2}-\d{2}$/),
+    img: Joi.string().uri(),
+  }).min(1),
+};
