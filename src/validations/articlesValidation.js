@@ -49,3 +49,9 @@ export const updateArticleSchema = {
     img: Joi.string().uri(),
   }).min(1),
 };
+
+export const deleteArticleSchema = {
+  [Segments.PARAMS]: Joi.object({
+    id: Joi.string().custom(objectIdValidator).required(),
+  }),
+};
