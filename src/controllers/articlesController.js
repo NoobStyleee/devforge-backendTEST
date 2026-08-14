@@ -2,12 +2,18 @@ import createHttpError from 'http-errors';
 import { Article } from '../models/article.js';
 
 export const getArticlesController = async (req, res) => {
-  const { page, limit } = req.query;
+  const { page, limit, filter } = req.query;
 
   const skip = (page - 1) * limit;
 
+  const sort = filter === 'popular' ? { rate: -1 } : {};
+
   const [articles, total] = await Promise.all([
-    Article.find().skip(skip).limit(limit).populate('ownerId', 'name'),
+    Article.find()
+      .sort(sort)
+      .skip(skip)
+      .limit(limit)
+      .populate('ownerId', 'name'),
     Article.countDocuments(),
   ]);
 
