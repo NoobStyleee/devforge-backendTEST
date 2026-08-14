@@ -27,10 +27,25 @@ export const getArticlesController = async (req, res) => {
 
 export const getArticlesByAuthorController = async (req, res) => {
   const { ownerId } = req.params;
+  const { page, limit } = req.query;
 
-  const articles = await Article.find({ ownerId });
+  const skip = (page - 1) * limit;
 
-  res.status(200).json(articles);
+  const [articles, total] = await Promise.all([
+    Article.find({ ownerId })
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
+      .populate('ownerId', 'name'),
+    Article.countDocuments({ ownerId }),
+  ]);
+
+  res.status(200).json({
+    articles,
+    total,
+    page: Number(page),
+    limit: Number(limit),
+  });
 };
 
 export const getArticleByIdController = async (req, res) => {
