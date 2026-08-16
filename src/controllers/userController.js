@@ -49,14 +49,50 @@ export const deleteArticleFromSavedArticles = async (req, res) => {
 
 export const getSavedArticles = async (req, res) => {
   const userId = req.user._id;
+  const { page, limit } = req.query;
 
-  const user = await User.findById(userId).populate('savedArticles');
+  const user = await User.findById(userId).select('savedArticles');
 
   if (!user) {
     throw createHttpError(404, 'User not found');
   }
 
-  res.status(200).json(user.savedArticles);
+  const total = user.savedArticles.length;
+  const skip = (page - 1) * limit;
+
+  const pageIds = [...user.savedArticles].reverse().slice(skip, skip + limit);
+
+  const found = await Article.find({ _id: { $in: pageIds } }).populate(
+    'ownerId',
+    'name username',
+  );
+
+  const byId = new Map(
+    found.map((article) => [article._id.toString(), article]),
+  );
+  const articles = pageIds.map((id) => byId.get(id.toString())).filter(Boolean);
+
+  res.status(200).json({
+    articles,
+    total,
+    page,
+    limit,
+  });
+};
+
+export const getCurrentUser = async (req, res) => {
+  const { _id, name, username, avatar, avatarUrl } = req.user;
+
+  const articlesAmount = await Article.countDocuments({ ownerId: _id });
+
+  res.status(200).json({
+    _id,
+    name: name ?? '',
+    username,
+    avatar,
+    avatarUrl,
+    articlesAmount,
+  });
 };
 
 export const getUsers = async (req, res) => {
