@@ -6,6 +6,7 @@ import {
   getArticlesController,
   createArticle,
   updateArticle,
+  deleteArticle,
 } from '../controllers/articlesController.js';
 import {
   getArticlesByAuthorValidation,
@@ -13,6 +14,7 @@ import {
   getArticlesSchema,
   createArticlesSchema,
   updateArticleSchema,
+  deleteArticleSchema,
 } from '../validations/articlesValidation.js';
 import { authenticate } from '../middleware/authenticate.js';
 import multer from 'multer';
@@ -50,6 +52,13 @@ router.patch(
   authenticate,
   celebrate(updateArticleSchema),
   updateArticle,
+);
+
+router.delete(
+  '/articles/:id',
+  authenticate,
+  celebrate(deleteArticleSchema),
+  deleteArticle,
 );
 
 export default router;

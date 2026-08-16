@@ -60,6 +60,25 @@ export const createArticle = async (req, res) => {
   res.status(201).json(newArticle);
 };
 
+export const deleteArticle = async (req, res) => {
+  const { id } = req.params;
+  const { _id: userId } = req.user;
+
+  const article = await Article.findById(id);
+
+  if (!article) {
+    throw createHttpError(404, 'Article not found');
+  }
+
+  if (article.ownerId.toString() !== userId.toString()) {
+    throw createHttpError(403, 'You can delete only your own articles');
+  }
+
+  await Article.findByIdAndDelete(id);
+
+  res.status(200).json({ message: 'Article deleted successfully' });
+};
+
 export const updateArticle = async (req, res) => {
   const { id } = req.params;
   const { _id: userId } = req.user;
