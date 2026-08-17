@@ -4,6 +4,7 @@ import { celebrate } from 'celebrate';
 import {
   getUsers,
   getUserById,
+  getCurrentUser,
   getSavedArticles,
   addArticleToSavedArticles,
   deleteArticleFromSavedArticles,
@@ -14,6 +15,7 @@ import {
 import {
   getUsersSchema,
   getUserByIdSchema,
+  getSavedArticlesSchema,
 } from '../validations/userValidation.js';
 
 import { authenticate } from '../middleware/authenticate.js';
@@ -23,9 +25,15 @@ import { upload } from '../middleware/upload.js';
 const router = Router();
 
 router.get('/users', celebrate(getUsersSchema), getUsers);
+router.get('/users/me', authenticate, getCurrentUser);
+router.get(
+  '/saved-articles',
+  authenticate,
+  celebrate(getSavedArticlesSchema),
+  getSavedArticles,
+);
 router.get('/users/top-creators', getTopCreators);
 router.get('/users/:id', celebrate(getUserByIdSchema), getUserById);
-router.get('/saved-articles', authenticate, getSavedArticles);
 
 router.post(
   '/saved-articles/:id',
