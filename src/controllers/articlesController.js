@@ -64,13 +64,17 @@ export const getArticleByIdController = async (req, res) => {
 };
 
 export const createArticle = async (req, res) => {
-  const { title, desc, img, date, author } = req.body;
+  const { title, desc, date, author } = req.body;
   const ownerId = req.user._id;
+
+  if (!req.file) {
+    return res.status(400).json({ message: "Image is required" });
+  }
 
   const newArticle = await Article.create({
     title,
     desc,
-    img,
+    img: req.file.path, 
     ownerId,
     date,
     author,
@@ -80,9 +84,7 @@ export const createArticle = async (req, res) => {
     throw createHttpError();
   }
 
-  await User.findByIdAndUpdate(ownerId, {
-    $inc: { articlesAmount: 1 },
-  });
+  await User.findByIdAndUpdate(ownerId, { $inc: { articlesAmount: 1 } });
 
   res.status(201).json(newArticle);
 };
