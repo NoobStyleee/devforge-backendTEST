@@ -11,6 +11,10 @@ export const getArticlesByAuthorValidation = {
   [Segments.PARAMS]: Joi.object({
     ownerId: Joi.string().custom(objectIdValidator).required(),
   }),
+  [Segments.QUERY]: Joi.object({
+    page: Joi.number().integer().min(1).default(1),
+    limit: Joi.number().integer().min(1).default(12),
+  }),
 };
 
 export const getArticleByIdSchema = {
@@ -23,6 +27,7 @@ export const getArticlesSchema = {
   [Segments.QUERY]: Joi.object({
     page: Joi.number().integer().min(1).default(1),
     limit: Joi.number().integer().min(1).default(6),
+    filter: Joi.string().valid('all', 'popular').default('all'),
   }),
 };
 
