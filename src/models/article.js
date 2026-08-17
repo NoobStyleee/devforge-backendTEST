@@ -18,16 +18,20 @@ const articleSchema = new Schema(
       type: String,
       required: false,
     },
-    rate: {
-      type: Number,
-      default: 0,
-    },
     ownerId: {
       type: Schema.Types.ObjectId,
       ref: 'User',
       required: true,
     },
+    rate: {
+      type: Number,
+      default: 0,
+    },
     date: {
+      type: String,
+      required: true,
+    },
+    author: {
       type: String,
       required: true,
     },

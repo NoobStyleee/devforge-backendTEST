@@ -5,6 +5,7 @@ import {
   getArticleByIdController,
   getArticlesController,
   createArticle,
+  updateArticle,
   deleteArticle,
 } from '../controllers/articlesController.js';
 import {
@@ -12,6 +13,7 @@ import {
   getArticleByIdSchema,
   getArticlesSchema,
   createArticlesSchema,
+  updateArticleSchema,
   deleteArticleSchema,
 } from '../validations/articlesValidation.js';
 import { authenticate } from '../middleware/authenticate.js';
@@ -43,6 +45,13 @@ router.get(
   '/articles/author/:ownerId',
   celebrate(getArticlesByAuthorValidation),
   getArticlesByAuthorController,
+);
+
+router.patch(
+  '/articles/:id',
+  authenticate,
+  celebrate(updateArticleSchema),
+  updateArticle,
 );
 
 router.delete(
