@@ -36,7 +36,7 @@ router.get(
 router.post(
   '/articles',
   authenticate,
-  upload.single('image'),
+  upload.single('img'),
   celebrate(createArticlesSchema),
   createArticle,
 );
