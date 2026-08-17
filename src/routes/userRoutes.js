@@ -9,6 +9,7 @@ import {
   addArticleToSavedArticles,
   deleteArticleFromSavedArticles,
   updateUserAvatar,
+  getTopCreators,
 } from '../controllers/userController.js';
 
 import {
@@ -25,13 +26,15 @@ const router = Router();
 
 router.get('/users', celebrate(getUsersSchema), getUsers);
 router.get('/users/me', authenticate, getCurrentUser);
-router.get('/users/:id', celebrate(getUserByIdSchema), getUserById);
 router.get(
   '/saved-articles',
   authenticate,
   celebrate(getSavedArticlesSchema),
   getSavedArticles,
 );
+router.get('/users/top-creators', getTopCreators);
+router.get('/users/:id', celebrate(getUserByIdSchema), getUserById);
+
 router.post(
   '/saved-articles/:id',
   authenticate,

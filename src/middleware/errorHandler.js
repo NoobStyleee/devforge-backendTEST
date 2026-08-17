@@ -1,5 +1,5 @@
 export const errorHandler = (error, req, res, next) => {
-  if (error.status) {
+  if (error instanceof HttpError) {
     return res.status(error.status).json({
       message: error.message || error.name,
     });
