@@ -9,6 +9,14 @@ import {
   setSessionCookies,
 } from '../services/auth.js';
 
+const cleanSessionId = (id) => {
+  if (!id || typeof id !== 'string') return id;
+  if (id.startsWith('j:')) {
+    return id.replace(/^j:"|"$/g, '');
+  }
+  return id;
+};
+
 export const registerUser = async (req, res) => {
   const { username, email, password } = req.body;
   const userWithSameEmail = await User.findOne({ email });
@@ -47,7 +55,9 @@ export const loginUser = async (req, res) => {
 };
 
 export const refreshUserSession = async (req, res) => {
-  const { sessionId, refreshToken } = req.cookies;
+  const rawSessionId = req.cookies.sessionId;
+  const refreshToken = req.cookies.refreshToken;
+  const sessionId = cleanSessionId(rawSessionId);
 
   const session = await Session.findOne({
     _id: sessionId,

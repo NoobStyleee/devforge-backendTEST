@@ -3,11 +3,16 @@ import { Session } from '../models/session.js';
 import { User } from '../models/user.js';
 
 export const authenticate = async (req, res, next) => {
-  const { sessionId, accessToken } = req.cookies;
+  let { sessionId, accessToken } = req.cookies;
 
   if (!accessToken || !sessionId) {
     throw createHttpError(401, 'Missing access token');
   }
+
+  if (typeof sessionId === 'string' && sessionId.startsWith('j:')) {
+    sessionId = sessionId.replace(/^j:"|"$/g, '');
+  }
+
   const session = await Session.findOne({ _id: sessionId, accessToken });
 
   if (!session) {
