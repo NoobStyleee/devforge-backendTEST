@@ -13,10 +13,24 @@ import cookieParser from 'cookie-parser';
 const app = express();
 const PORT = process.env.PORT ?? 3000;
 
+const DEV_ORIGINS = ['http://localhost:3000', 'http://localhost:3001'];
+
+const allowedOrigins = [
+  ...(process.env.CLIENT_URL ?? '')
+    .split(',')
+    .map((origin) => origin.trim().replace(/\/+$/, ''))
+    .filter(Boolean),
+  ...(process.env.NODE_ENV === 'production' ? [] : DEV_ORIGINS),
+];
+
 app.set('trust proxy', 1);
 app.use(
   cors({
-    origin: 'https://devforge-frontend-steel.vercel.app',
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+
+      return callback(null, allowedOrigins.includes(origin));
+    },
     credentials: true,
   }),
 );
