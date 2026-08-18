@@ -10,11 +10,27 @@ import userRoutes from './routes/userRoutes.js';
 import articlesRoutes from './routes/articlesRoutes.js';
 import { errors } from 'celebrate';
 import cookieParser from 'cookie-parser';
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://devforge-frontend-steel.vercel.app',
+];
 const app = express();
 const PORT = process.env.PORT ?? 3000;
 
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // Allow requests with no origin (like mobile apps, curl, or Postman)
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true, // Required because your frontend sends cookies/credentials
+  }),
+);
 app.use(logger);
 app.use(cookieParser());
 

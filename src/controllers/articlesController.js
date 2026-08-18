@@ -1,6 +1,7 @@
 import createHttpError from 'http-errors';
 import { Article } from '../models/article.js';
 import { User } from '../models/user.js';
+import { uploadToCloudinary } from '../services/cloudinaryService.js';
 
 export const getArticlesController = async (req, res) => {
   const { page, limit, filter } = req.query;
@@ -67,16 +68,19 @@ export const createArticle = async (req, res) => {
   const { title, desc, date, author } = req.body;
   const ownerId = req.user._id;
 
-  const img = req.file ? req.file.path : req.body.img;
-
-  if (!img) {
+  // 2. Check if Multer attached the file buffer
+  if (!req.file) {
     throw createHttpError(400, 'Image is required');
   }
 
+  // 3. Upload the buffer directly to Cloudinary
+  const imgUrl = await uploadToCloudinary(req.file.buffer);
+
+  // 4. Save the returned Cloudinary URL string into MongoDB
   const newArticle = await Article.create({
     title,
     desc,
-    img: req.file.path,
+    img: imgUrl, // Save the secure Cloudinary URL here
     ownerId,
     date,
     author,
