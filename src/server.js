@@ -10,23 +10,13 @@ import userRoutes from './routes/userRoutes.js';
 import articlesRoutes from './routes/articlesRoutes.js';
 import { errors } from 'celebrate';
 import cookieParser from 'cookie-parser';
-const allowedOrigins = [
-  'http://localhost:3000',
-  'https://devforge-frontend-steel.vercel.app',
-];
 const app = express();
 const PORT = process.env.PORT ?? 3000;
 
 app.set('trust proxy', 1);
 app.use(
   cors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(null, false);
-      }
-    },
+    origin: 'https://devforge-frontend-steel.vercel.app',
     credentials: true,
   }),
 );
