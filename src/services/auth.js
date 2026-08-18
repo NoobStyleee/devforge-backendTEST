@@ -23,6 +23,8 @@ export const setSessionCookies = (res, session) => {
     maxAge: THIRTY_MINUTES,
   });
 
+  const idString = session._id.toString();
+
   res.cookie('refreshToken', session.refreshToken, {
     httpOnly: true,
     secure: true,
@@ -30,7 +32,7 @@ export const setSessionCookies = (res, session) => {
     maxAge: ONE_DAY,
   });
 
-  res.cookie('sessionId', session._id.toString(), {
+  res.cookie('sessionId', idString, {
     httpOnly: true,
     secure: true,
     sameSite: 'none',

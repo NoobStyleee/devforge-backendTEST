@@ -9,8 +9,8 @@ export const authenticate = async (req, res, next) => {
     throw createHttpError(401, 'Missing access token');
   }
 
-  if (typeof sessionId === 'string' && sessionId.startsWith('j:')) {
-    sessionId = sessionId.replace(/^j:"|"$/g, '');
+  if (typeof sessionId === 'string') {
+    sessionId = sessionId.replace(/^j:/, '').replace(/^"|"$/g, '');
   }
 
   const session = await Session.findOne({ _id: sessionId, accessToken });
