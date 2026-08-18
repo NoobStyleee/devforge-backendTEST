@@ -20,9 +20,9 @@ app.use(
     credentials: true,
   }),
 );
+app.use(cookieParser());
 app.use(express.json());
 app.use(logger);
-app.use(cookieParser());
 
 app.use(authRoutes);
 app.use(userRoutes);
