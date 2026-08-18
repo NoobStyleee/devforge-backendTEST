@@ -67,14 +67,16 @@ export const createArticle = async (req, res) => {
   const { title, desc, date, author } = req.body;
   const ownerId = req.user._id;
 
-  if (!req.file) {
-    return res.status(400).json({ message: "Image is required" });
+  const img = req.file ? req.file.path : req.body.img;
+
+  if (!img) {
+    throw createHttpError(400, 'Image is required');
   }
 
   const newArticle = await Article.create({
     title,
     desc,
-    img: req.file.path, 
+    img: req.file.path,
     ownerId,
     date,
     author,
@@ -130,6 +132,12 @@ export const updateArticle = async (req, res) => {
 
   if (article.ownerId.toString() !== userId.toString()) {
     throw createHttpError(403, 'You can edit only your own articles');
+  }
+
+  const updateData = { ...req.body };
+
+  if (req.file) {
+    updateData.img = req.file.path;
   }
 
   const updatedArticle = await Article.findByIdAndUpdate(id, req.body, {
