@@ -141,10 +141,10 @@ export const updateArticle = async (req, res) => {
   const updateData = { ...req.body };
 
   if (req.file) {
-    updateData.img = req.file.path;
+    updateData.img = await uploadToCloudinary(req.file.buffer);
   }
 
-  const updatedArticle = await Article.findByIdAndUpdate(id, req.body, {
+  const updatedArticle = await Article.findByIdAndUpdate(id, updateData, {
     new: true,
   });
 

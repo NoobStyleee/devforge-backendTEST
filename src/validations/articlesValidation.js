@@ -38,7 +38,7 @@ export const createArticlesSchema = {
     date: Joi.string()
       .pattern(/^\d{4}-\d{2}-\d{2}$/)
       .required(),
-    author: Joi.string().min(4).max(50).required(), 
+    author: Joi.string().min(4).max(50).required(),
   }),
 };
 

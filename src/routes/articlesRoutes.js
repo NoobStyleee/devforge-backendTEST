@@ -46,6 +46,7 @@ router.get(
 router.patch(
   '/articles/:id',
   authenticate,
+  upload.single('img'),
   celebrate(updateArticleSchema),
   updateArticle,
 );
