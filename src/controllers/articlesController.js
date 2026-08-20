@@ -127,9 +127,6 @@ export const deleteArticle = async (req, res) => {
 export const updateArticle = async (req, res) => {
   const { id } = req.params;
   const { _id: userId } = req.user;
-  console.log('--- UPDATE ARTICLE DEBUG ---');
-  console.log('req.body:', req.body);
-  console.log('req.file:', req.file);
 
   const article = await Article.findById(id);
 
