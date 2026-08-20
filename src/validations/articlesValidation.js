@@ -50,7 +50,9 @@ export const updateArticleSchema = {
     title: Joi.string().min(3).max(48),
     desc: Joi.string().min(100).max(4000),
     date: Joi.string().pattern(/^\d{4}-\d{2}-\d{2}$/),
-    img: Joi.string().uri(),
+    img: Joi.alternatives()
+      .try(Joi.string().uri(), Joi.any().strip())
+      .optional(),
   }).min(1),
 };
 
